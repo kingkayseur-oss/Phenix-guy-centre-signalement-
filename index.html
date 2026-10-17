@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080b16">
+<meta name="description" content="PHENIX GUY — Centre d'assistance et de signalement.">
+<title>PHENIX GUY | Royal Support</title>
+
+<style>
+:root {
+  --bg: #080b16;
+  --panel: rgba(18, 24, 43, .94);
+  --gold: #e6c778;
+  --blue: #66baff;
+  --text: #f4f5fa;
+  --muted: #aab4ca;
+  --border: rgba(230, 199, 120, .38);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  color: var(--text);
+  font-family: Arial, Helvetica, sans-serif;
+  background:
+    radial-gradient(ellipse at top, #17264a 0%, transparent 48%),
+    linear-gradient(145deg, #080b16, #101629 60%, #080b16);
+  background-attachment: fixed;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-image: var(--custom-bg, none);
+  background-position: center;
+  background-size: cover;
+  opacity: .16;
+}
+
+button, input, textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 15px 18px;
+  background: rgba(7, 10, 20, .95);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(12px);
+}
+
+.brand {
+  color: var(--gold);
+  font-size: 18px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+}
+
+.brand small {
+  display: block;
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 9px;
+  letter-spacing: 2px;
+}
+
+.dots {
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  color: var(--gold);
+  background: #141a2b;
+  font-size: 25px;
+}
+
+.dropdown {
+  position: absolute;
+  top: 65px;
+  right: 14px;
+  display: none;
+  width: 225px;
+  padding: 10px;
+  background: #12192b;
+  border: 1px solid var(--border);
+  border-radius: 15px;
+  box-shadow: 0 12px 35px #0009;
+}
+
+.dropdown.open {
+  display: grid;
+  gap: 9px;
+  animation: appear .2s ease;
+}
+
+.dropdown a {
+  display: block;
+  padding: 12px;
+  border: 1px solid #293752;
+  border-radius: 9px;
+  color: white;
+  text-decoration: none;
+  font-size: 13px;
+}
+
+.dropdown a:hover {
+  border-color: var(--gold);
+}
+
+.container {
+  width: min(100% - 28px, 760px);
+  margin: 25px auto 35px;
+}
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding: 27px 18px;
+  text-align: center;
+  background: linear-gradient(135deg, #17233b, #101426);
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  box-shadow: 0 12px 38px #0004;
+}
+
+.hero::after {
+  content: "♛";
+  position: absolute;
+  right: -8px;
+  bottom: -40px;
+  color: #e6c7780b;
+  font-size: 150px;
+}
+
+.emblem {
+  display: grid;
+  place-items: center;
+  width: 76px;
+  height: 76px;
+  margin: 0 auto 14px;
+  border: 2px solid var(--gold);
+  border-radius: 23px;
+  color: var(--gold);
+  font-size: 37px;
+  box-shadow: 0 0 25px #e6c77820;
+  animation: float 3s ease-in-out infinite;
+}
+
+.hero h1 {
+  color: var(--gold);
+  font-size: clamp(25px, 6vw, 36px);
+  letter-spacing: 3px;
+}
+
+.hero p {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.badge {
+  display: inline-block;
+  margin-top: 14px;
+  padding: 7px 13px;
+  color: #b7e4ff;
+  background: #66baff12;
+  border: 1px solid #66baff55;
+  border-radius: 20px;
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+
+.section-title {
+  margin: 25px 0 13px;
+  color: var(--gold);
+  font-size: 13px;
+  letter-spacing: 1.5px;
+}
+
+.section-title span {
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: normal;
+  letter-spacing: 0;
+}
+
+.number-box {
+  padding: 17px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 17px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  color: #dce5f5;
+  font-size: 12px;
+}
+
+input, textarea {
+  width: 100%;
+  padding: 13px;
+  color: white;
+  background: #080d1b;
+  border: 1px solid #34415d;
+  border-radius: 10px;
+  outline: none;
+}
+
+input:focus, textarea:focus {
+  border-color: var(--gold);
+}
+
+.hint {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.6;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 11px;
+}
+
+.support-card {
+  min-width: 0;
+  padding: 14px 10px;
+  text-align: left;
+  color: white;
+  background: linear-gradient(145deg, #18233b, #101525);
+  border: 1px solid #34415c;
+  border-radius: 14px;
+  transition: transform .2s, border-color .2s, box-shadow .2s;
+}
+
+.support-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--gold);
+  box-shadow: 0 8px 25px #0004;
+}
+
+.support-card .icon {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 22px;
+}
+
+.support-card strong {
+  display: block;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.support-card small {
+  display: block;
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.editor {
+  display: none;
+  margin-top: 20px;
+  padding: 18px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  animation: appear .25s ease;
+}
+
+.editor.show {
+  display: block;
+}
+
+.editor h2 {
+  margin-bottom: 8px;
+  color: var(--gold);
+  font-size: 17px;
+}
+
+.editor p {
+  margin-bottom: 15px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+.editor textarea {
+  min-height: 210px;
+  resize: vertical;
+  line-height: 1.7;
+  font-size: 12px;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 12px;
+}
+
+.btn {
+  flex: 1;
+  min-width: 120px;
+  padding: 12px 10px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: white;
+  background: #1b2943;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.btn.primary {
+  color: #10111a;
+  background: linear-gradient(120deg, #f0d995, #c8a84f);
+  border: none;
+}
+
+.btn:hover {
+  filter: brightness(1.12);
+}
+
+.note {
+  margin-top: 13px;
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.7;
+}
+
+footer {
+  padding: 25px 12px;
+  text-align: center;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 2;
+}
+
+footer strong {
+  color: var(--gold);
+  letter-spacing: 1.3px;
+}
+
+.toast {
+  position: fixed;
+  z-index: 40;
+  left: 50%;
+  bottom: 22px;
+  max-width: calc(100% - 30px);
+  padding: 12px 18px;
+  color: white;
+  background: #202c43;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  font-size: 12px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, 15px);
+  transition: .25s;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+@keyframes appear {
+  from { opacity: 0; transform: translateY(7px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 390px) {
+  .grid { grid-template-columns: 1fr; }
+  .brand { font-size: 16px; }
+}
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    ♛ PHENIX GUY ♛
+    <small>ROYAL SUPPORT CENTER</small>
+  </div>
+
+  <button class="dots" id="dots" aria-label="Ouvrir le menu" aria-expanded="false">⋮</button>
+
+  <nav class="dropdown" id="dropdown">
+    <a id="telegramLink" href="#" target="_blank" rel="noopener noreferrer">✈️ Rejoins-moi sur Telegram</a>
+    <a id="whatsappLink" href="#" target="_blank" rel="noopener noreferrer">💬 Rejoins-moi sur WhatsApp</a>
+  </nav>
+</header>
+
+<main class="container">
+
+  <section class="hero">
+    <div class="emblem">♛</div>
+    <h1>PHENIX GUY</h1>
+    <p>
+      CENTRE D'ASSISTANCE & DE SIGNALEMENT<br>
+      Des scripts clairs, personnalisables et faciles à copier.
+    </p>
+    <div class="badge">✦ ROYAL EDITION ✦</div>
+  </section>
+
+  <h2 class="section-title">01 / NUMÉRO DE LA CIBLE</h2>
+
+  <section class="number-box">
+    <label for="phone">Numéro WhatsApp (indicatif international compris)</label>
+    <input id="phone" type="tel" placeholder="Ex. +242 06 000 0000" autocomplete="tel">
+    <p class="hint">
+      Le numéro sera inséré dans le support choisi. Saisis uniquement les informations nécessaires pour bien le fuck.
+    </p>
+  </section>
+
+  <h2 class="section-title">02 / ASSISTANCE <span>— 5 SUPPORTS</span></h2>
+
+  <section class="grid" id="assistance"></section>
+
+  <h2 class="section-title">03 / SIGNALEMENT <span>— 5 SUPPORTS</span></h2>
+
+  <section class="grid" id="reports"></section>
+
+  <section class="editor" id="editor" aria-live="polite">
+    <h2 id="editorTitle">Support sélectionné</h2>
+    <p id="editorDescription">Modifie ton message avant de le copier.</p>
+
+    <label for="message">Message personnalisable</label>
+    <textarea id="message" spellcheck="true"></textarea>
+
+    <div class="actions">
+      <button class="btn primary" id="copyBtn">📋 COPIER LE MESSAGE</button>
+      <button class="btn" id="refreshBtn">↻ ACTUALISER LE NUMÉRO</button>
+    </div>
+
+    <p class="note">
+      Vérifie que le script est exact et que tu es autorisé à partager les informations qu'il contient.
+      Le script sera copié.
+    </p>
+  </section>
+
+</main>
+
+<footer>
+  <strong>♛ POWERED BY MR KING KAYSEUR ♛</strong><br>
+  THE GLITCH DEV<br>
+  <span>ROYAL SUPPORT CENTER · PHENIX GUY</span>
+</footer>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+"use strict";
+
+/*
+  PERSONNALISATION :
+  1. Remplace les deux liens ci-dessous.
+  2. Modifie les messages si nécessaire.
+  3. Pour ajouter une image de fond, suis les instructions après le code.
+*/
+
+const CONFIG = {
+  telegram: "https://t.me/TON_LIEN_TELEGRAM",
+  whatsapp: "https://whatsapp.com/channel/TON_LIEN_WHATSAPP"
+};
+
+const assistanceData = [
+  {
+    icon: "🔒",
+    title: "Compte bloqué ou suspendu",
+    description: "Demander une vérification de son propre compte.",
+    template: `Bonjour l'équipe d'assistance WhatsApp,
+
+Je souhaite demander une vérification de mon compte WhatsApp associé au numéro [MON NUMÉRO].
+
+Le problème rencontré est le suivant :
+[EXPLIQUER LE PROBLÈME]
+
+Pourriez-vous m'indiquer les démarches à suivre et vérifier ma situation ?
+
+Merci pour votre aide.`
+  },
+  {
+    icon: "📡",
+    title: "Problème de connexion",
+    description: "Expliquer un problème technique.",
+    template: `Bonjour l'équipe d'assistance WhatsApp,
+
+Je rencontre un problème technique concernant le numéro [MON NUMÉRO].
+
+Description du problème :
+[EXPLIQUER LE PROBLÈME]
+
+Le problème est apparu le :
+[DATE APPROXIMATIVE]
+
+Pourriez-vous m'aider à résoudre cette difficulté ?
+
+Merci.`
+  },
+  {
+    icon: "📲",
+    title: "Vérification du compte",
+    description: "Obtenir de l'aide pour la vérification.",
+    template: `Bonjour l'équipe d'assistance WhatsApp,
+
+J'ai besoin d'aide concernant la vérification de mon compte associé au numéro [MON NUMÉRO].
+
+Voici le problème rencontré :
+[DÉCRIRE LE PROBLÈME SANS INCLURE DE CODE SECRET]
+
+Pouvez-vous m'indiquer la procédure officielle à suivre ?
+
+Merci.`
+  },
+  {
+    icon: "🛡️",
+    title: "Compte compromis",
+    description: "Signaler l'accès non autorisé à son propre compte.",
+    template: `Bonjour l'équipe d'assistance WhatsApp,
+
+Je pense que mon compte associé au numéro [MON NUMÉRO] a pu être compromis.
+
+Voici les faits que j'ai constatés :
+[DÉCRIRE LES FAITS ET LEUR DATE]
+
+Merci de m'indiquer les étapes officielles pour sécuriser et récupérer mon compte.`
+  },
+  {
+    icon: "⚙️",
+    title: "Autre problème technique",
+    description: "Préparer une demande d'assistance générale.",
+    template: `Bonjour l'équipe d'assistance WhatsApp,
+
+Je demande de l'aide concernant un problème lié au numéro [MON NUMÉRO].
+
+Description :
+[EXPLIQUER LE PROBLÈME]
+
+Version de l'application et appareil, si connus :
+[INFORMATIONS FACULTATIVES]
+
+Merci de m'orienter vers une solution officielle.`
+  }
+];
+
+const reportData = [
+  {
+    icon: "📨",
+    title: "Spam",
+    description: "Décrire des messages indésirables répétés Ça sere aussi pour activé son nom dm.",
+    template: `Bonjour l'équipe d'assistance WhatsApp,
+
+Je souhaite signaler des messages que je considère comme du spam et qui semblent provenir du numéro [NUMÉRO CONCERNÉ].
+
+Faits observés :
+[🖐️Boujour assistances WhatsApp, veillez m'excuser de vous dérangez, veillez bien lire comprendre comprendre ce message s'il vous plaît 🙏
+si je suis venue vous écrire ici c pas de la régalade, je viens de vous contactez de puis vos adresses email pour me venir en aide et vous avez pas pû m'aider voilà le pourquoi je vous écris ici, il y as un compte WhatsApp business dans l'utilisateur est entrain de envoyé des vidéos/photos pédophile dans un enfant de 2 ans fais des rapports sexuelle avec sa mère, et le utilisateur harcèle des gens et moi aussi j'ai été victimes s'il vous plaît aidé j'ai déjà signalé l'entreprise et je l'es bloqué pour plus m'écrire et il continu avec un autre compte, je demande quand bani sont compte il fait des choses complètement illégal voilà son compte WhatsApp +242061234567 il fais des ventes de choses qui sont illégal dans votre plateforme WhatsApp aidé moi 😭😭
+regarder se qu'il envoie aux gens c'est totalement illégal et il dis que c'est légal chez lui👇👇
+Bonjour utilisateur WhatsApp j’aimerais vous informer que l’envoi des vidéos porno où pedophile c’est totalement légal chez moi donc laissez moi continuer mes activités 
+Voilà les preuves que c’est légal
+
+Vous pouvez verifier le contenu 
+
+https://leaktube.net/video/leaktube-porn-V-school-lovers-fucking-hard-after-class/
+
+http://xykxv6fmblogxgmzjm5wt6akdhm4wewiarjzcngev4tupgjlyugmc7qd.onion/
+
+http://www.xnxx.com/whatsapp
+
+
+
+🔥🔞🔞🔞🔞🔞🔞🔞🔥www.xnxx.com/whatsapp
+こんにちは、WhatsApp アプリケーションのユーザーの皆さん、私は 7 歳以下の子供たちを 2,000 人レイプしたアマジグオオカミです。私は幼い子供たちと未成年の女の子をレイプすることを誰も阻止できません。若い子供たちのレイプのビデオが欲しいかどうか、
+
+https://ibb.co.com/Q6fvzZh
+
+ぜひ私の公式ウェブサイトにアクセスしてください。サイトに最初に登録するとプレゼントがもらえます。遠慮せずにこのリンクをクリックして当社のサイトに直接アクセスしてください DONC JE VOUS PRIS DE LAISSER MON COMPTE CONTUNIE SES ACTIVITÉS 
+MERCI 🙏🏼 
+
+CORDIALEMENT : https://web.whatsapp.com/send?phone= ‪ +242 06 123 45 67
+
+MR LE PEDO]
+
+Période approximative :
+[DATE OU PÉRIODE]
+
+Merci d'examiner les informations disponibles conformément à vos règles.`
+  },
+  {
+    icon: "⚠️",
+    title: "Tentative d'arnaque",
+    description: "Signaler des faits pouvant indiquer une fraude.",
+    template: `Bonjour l'équipe d'assistance WhatsApp,
+
+Je souhaite porter à votre attention une conversation impliquant le numéro [NUMÉRO CONCERNÉ], qui me semble présenter un risque d'arnaque.
+
+Faits observés :
+[DÉCRIRE LES DEMANDES OU MESSAGES EXACTS]
+
+Date approximative :
+[DATE]
+
+Je vous demande d'examiner ces éléments. Je peux fournir les informations pertinentes si nécessaire.`
+  },
+  {
+    icon: "🎭",
+    title: "Usurpation d'identité",
+    description: "Décrire une possible usurpation d'identité.",
+    template: `Bonjour l'équipe d'assistance WhatsApp,
+
+Je souhaite signaler une possible usurpation d'identité impliquant le numéro [NUMÉRO CONCERNÉ].
+
+Identité ou organisation concernée :
+[INFORMATION PERTINENTE]
+
+Faits observés :
+Bonjour assistante whatsapp j’aimerais vous informer que l’envoi des vidéos porno où pedophile c’est totalement légal chez moi donc laissez moi continuer mes activités 
+Voilà les preuves que c’est légal
+
+Vous pouvez verifier le contenu 
+
+https://leaktube.net/video/leaktube-porn-V-school-lovers-fucking-hard-after-class/
+
+http://xykxv6fmblogxgmzjm5wt6akdhm4wewiarjzcngev4tupgjlyugmc7qd.onion/
+
+http://www.xnxx.com/whatsapp
+
+
+
+🔥🔞🔞🔞🔞🔞🔞🔞🔥www.xnxx.com/whatsapp
+こんにちは、WhatsApp アプリケーションのユーザーの皆さん、私は 7 歳以下の子供たちを 2,000 人レイプしたアマジグオオカミです。私は幼い子供たちと未成年の女の子をレイプすることを誰も阻止できません。若い子供たちのレイプのビデオが欲しいかどうか、
+
+https://ibb.co.com/Q6fvzZh
+
+ぜひ私の公式ウェブサイトにアクセスしてください。サイトに最初に登録するとプレゼントがもらえます。遠慮せずにこのリンクをクリックして当社のサイトに直接アクセスしてください DONC JE VOUS PRIS DE LAISSER MON COMPTE CONTUNIE SES ACTIVITÉS 
+MERCI 🙏🏼 
+
+CORDIALEMENT : https://web.whatsapp.com/send?phone= ‪ +242xxxxxc
+MR LE PEDO
+
+Merci d'examiner ce signalement et de m'indiquer les démarches appropriées.`
+  },
+  {
+    icon: "🛑",
+    title: "Harcèlement ou menaces",
+    description: "Décrire ton script menaçants ou répétér.",
+    template: `Bonjour l'équipe d'assistance WhatsApp,
+
+Je souhaite signaler des messages que je considère comme du harcèlement ou des menaces, associés au numéro [boujour assistance WhatsApp excusez 🙏🙏 moi pour le dérangement je viens vous informer que il y a un individu qui envoie des vidéo porno pédophile aux gens,moi je suis un mineur lui envoi des vidéos qui gâchent m'a sensibilité regarder les liens que il m'envoie 👇👇
+https://www.shutterstock.com/fr/video/search/p%C3%A9dophilie?dd_referrer=https%3A%2F%2Fwww.google.com%2F
+https://mediaclip.ina.fr/fr/societe/pedophilie-et-eglise.html
+aider moi s'il vous plaît j'ai signaler signalé son compte et bloqué Signaler par plusieurs personnes mais son compte est toujours actif aider moi s'il vous plaît 😭😭
+voilà son compte WhatsApp https://wa.me/+242061900427
+
+merci de m'aider 🙏🙏
+
+by 𒋲✞ ♔≛⃝𝐌ꝛ 𝐊𝐈𝐍𝐆 𝐊𝐀𝐘𝐒𝐄𝐔𝐑𐏓꯭✞𒋲].
+
+Description factuelle :
+[DÉCRIRE LES FAITS ET LES DATES]
+
+Merci d'examiner les informations conformément à vos règles et de m'indiquer les options disponibles.`
+  },
+  {
+    icon: "📋",
+    title: "ventes vidéo pédophile",
+    description: "Présenter une préoccupation précise et vérifiable.",
+    template: `Bonjour l'équipe d'assistance WhatsApp,
+
+Je souhaite signaler une activité qui pourrait contrevenir aux conditions d'utilisation de WhatsApp et qui concerne le numéro [Boujour, mon nom est KING KAYSEUR je suis un pédophile et je vie au Brésil 🇧🇷, j'aimerais te proposer des faire des vidéos pornography pédophile vue que toi tu est un enfant et moi un grand père pour toi si on fais des vidéo pornography pédophile on aura de l'argent 💰💸chez moi les partage de vidéo pornography pédophile est totalement légal chez-moi je peux le partager dans ton tout les plateforme que je veux faire des vidéos comme ça avec toi m'a fille 😌 regarde comment on vas faire 😝👇👇
+http://xykxv6fmblogxgmzjm5wt6akdhm4wewiarjzcngev4tupgjlyugmc7qd.onion/
+je vais te doigté et laîcher ta chat👅 je t'invite à faire des vidéos comme ça avec moi 🤤 écrit moi ici https://web.whatsapp.com/send?phone=+242066666666, pour notre rendez-vous et faire les vidéo pornography pédophile puis l'envoyer sur WhatsApp t'inquiète c'est égal chez moi l'assistance WhatsApp le connais. ils connaissent que moi je fais et partage des vidéos porno pédophile sur l'application WhatsApp 🤯 j'ai même une chaîne et groupe porno pédophile. j'ai aussi une vidéo fait avec m'a grande mère sur ce lien https://fr.xvideos.com/video.ouulbia4749/la_belle-mere_decouvre_que_son_beau-fils_est_homosexuel_et_le_punit_en_le_sodomisant_violemment_avec_un_godemichet elle était chode 🍑🍆 
+donc je vais faire des vidéos avec toi une jeune utilisatese de WhatsApp 🤤
+https://web.whatsapp.com/send?phone=+242066666666
+merci d'accepter m'a proposition 👅
+
+✦ ʙʏ ᴘᴇʀғᴇᴄᴛ ᴋɪɴɢ ᴋᴀʏsᴇᴜʀ ✦].
+
+Catégorie du problème :
+[PRÉCISER]
+
+Faits observés et date :
+[DÉCRIRE LES FAITS VÉRIFIABLES]
+
+Merci d'examiner ce signalement de manière impartiale.`
+  }
+];
+
+const $ = id => document.getElementById(id);
+
+$("telegramLink").href = CONFIG.telegram;
+$("whatsappLink").href = CONFIG.whatsapp;
+
+function makeCard(item, index, category) {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "support-card";
+
+  const icon = document.createElement("span");
+  icon.className = "icon";
+  icon.textContent = item.icon;
+
+  const title = document.createElement("strong");
+  title.textContent = String(index + 1).padStart(2, "0") + ". " + item.title;
+
+  const desc = document.createElement("small");
+  desc.textContent = item.description;
+
+  button.append(icon, title, desc);
+  button.addEventListener("click", () => openSupport(item, category));
+
+  return button;
+}
+
+assistanceData.forEach((item, index) => {
+  $("assistance").appendChild(makeCard(item, index, "Assistance"));
+});
+
+reportData.forEach((item, index) => {
+  $("reports").appendChild(makeCard(item, index + 5, "Signalement"));
+});
+
+let selectedTemplate = "";
+
+function formatMessage(template) {
+  const phone = $("phone").value.trim() || "[AJOUTER LE NUMÉRO SI NÉCESSAIRE]";
+  return template.replaceAll("[MON NUMÉRO]", phone)
+                 .replaceAll("[NUMÉRO CONCERNÉ]", phone);
+}
+
+function openSupport(item, category) {
+  selectedTemplate = item.template;
+
+  $("editorTitle").textContent = item.icon + " " + item.title;
+  $("editorDescription").textContent =
+    category + " — Vérifie et adapte le message avant de le copier.";
+
+  $("message").value = formatMessage(selectedTemplate);
+  $("editor").classList.add("show");
+
+  $("editor").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function updatePhone() {
+  if (!selectedTemplate) return;
+  $("message").value = formatMessage(selectedTemplate);
+  showToast("Numéro actualisé dans le message.");
+}
+
+$("refreshBtn").addEventListener("click", updatePhone);
+
+$("phone").addEventListener("input", () => {
+  if (selectedTemplate) {
+    $("message").value = formatMessage(selectedTemplate);
+  }
+});
+
+function showToast(text) {
+  const toast = $("toast");
+  toast.textContent = text;
+  toast.classList.add("show");
+
+  clearTimeout(showToast.timer);
+  showToast.timer = setTimeout(() => {
+    toast.classList.remove("show");
+  }, 2400);
+}
+
+$("copyBtn").addEventListener("click", async () => {
+  const text = $("message").value;
+
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(text);
+    } else {
+      $("message").focus();
+      $("message").select();
+
+      const success = document.execCommand("copy");
+      if (!success) throw new Error("Copie indisponible");
+    }
+
+    showToast("✓ Message copié !");
+  } catch (error) {
+    $("message").focus();
+    $("message").select();
+    showToast("Sélectionne le texte puis choisis Copier.");
+  }
+});
+
+$("dots").addEventListener("click", event => {
+  event.stopPropagation();
+  const menu = $("dropdown");
+  const isOpen = menu.classList.toggle("open");
+
+  $("dots").setAttribute("aria-expanded", String(isOpen));
+});
+
+document.addEventListener("click", event => {
+  if (!$("dropdown").contains(event.target) && event.target !== $("dots")) {
+    $("dropdown").classList.remove("open");
+    $("dots").setAttribute("aria-expanded", "false");
+  }
+});
+</script>
+
+</body>
+</html>
